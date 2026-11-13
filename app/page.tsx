@@ -1,298 +1,204 @@
 import Link from "next/link";
-import ContactForm from "./components/ContactForm";
 import Header from "./components/Header";
-const projects = [
-  {
-    title: "Modern Luxury Residence",
-    category: "RESIDENTIAL",
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    title: "Contemporary Living Space",
-    category: "LIVING ROOM",
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    title: "Elegant Dining Interior",
-    category: "DINING",
-    image:
-      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    title: "Minimal Bedroom Design",
-    category: "BEDROOM",
-    image:
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    title: "Modern Kitchen Design",
-    category: "KITCHEN",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    title: "Luxury Interior Concept",
-    category: "INTERIOR DESIGN",
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85",
-  },
-];
+import Footer from "./components/Footer";
+import { photo, projects, services, steps } from "./data";
 
-const services = [
-  {
-    number: "01",
-    title: "Residential Design",
-    description:
-      "Thoughtfully designed homes that reflect your personality and lifestyle.",
-  },
-  {
-    number: "02",
-    title: "Commercial Spaces",
-    description:
-      "Inspiring workspaces and commercial interiors built around your vision.",
-  },
-  {
-    number: "03",
-    title: "Space Planning",
-    description:
-      "Smart layouts that bring together functionality, comfort and elegance.",
-  },
-];
+const featured = [projects[0], projects[1], projects[4]];
 
 export default function Home() {
   return (
-    <main id="top" className="min-h-screen bg-[#f8f7f4] text-[#25251f]">
+    <>
       <Header />
-      {/* Navigation */}
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
-        <Link href="/" className="text-2xl font-semibold tracking-[0.18em]">
-          AUREN<span className="text-[#a58b67]">.</span>
-          <span className="ml-2 text-xs font-normal tracking-[0.25em]">
-            INTERIORS
-          </span>
-        </Link>
 
-        <div className="hidden items-center gap-9 text-sm md:flex">
-          <Link href="#about" className="transition hover:text-[#a58b67]">
-            About
-          </Link>
-          <Link href="/projects" className="transition hover:text-[#a58b67]">
-            Projects
-          </Link>
-          <Link href="#services" className="transition hover:text-[#a58b67]">
-            Services
-          </Link>
-          <Link href="#contact" className="transition hover:text-[#a58b67]">
-            Contact
-          </Link>
-        </div>
+      <main>
+        {/* Hero */}
+        <section className="mx-auto max-w-7xl px-5 pt-6 sm:px-8 sm:pt-8">
+          <div className="group relative overflow-hidden bg-walnut">
+            <img
+              src={photo("photo-1600210492486-724fe5c67fb0", 1600)}
+              alt="Warm, modern living room interior"
+              width={1600}
+              height={1000}
+              fetchPriority="high"
+              className="h-140 w-full object-cover transition duration-1000 group-hover:scale-105 motion-reduce:transition-none sm:h-160"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-linear-to-t from-espresso/90 via-espresso/30 to-transparent"
+            />
 
-        <Link
-          href="#contact"
-          className="border border-[#25251f] px-5 py-3 text-xs tracking-widest transition hover:bg-[#25251f] hover:text-white"
-        >
-          LET'S TALK
-        </Link>
-      </nav>
-
-      {/* Hero */}
-      <section className="relative mx-5 min-h-[620px] overflow-hidden bg-[#39372f] md:mx-10">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "linear-gradient(90deg, rgba(20,20,17,0.75), rgba(20,20,17,0.12)), url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=90')",
-          }}
-        />
-
-        <div className="relative z-10 flex min-h-[620px] max-w-7xl flex-col justify-center px-8 py-20 text-white md:px-20">
-          <p className="mb-7 text-xs tracking-[0.4em] text-[#d6c1a1]">
-            THOUGHTFUL SPACES. TIMELESS DESIGN.
-          </p>
-
-          <h1 className="max-w-3xl text-5xl leading-[1.12] font-light tracking-tight md:text-7xl">
-            Spaces that
-            <br />
-            tell your <span className="italic text-[#d6c1a1]">story.</span>
-          </h1>
-
-          <p className="mt-8 max-w-lg text-base leading-8 text-white/75">
-            We create beautifully considered interiors that bring elegance,
-            comfort and personality into everyday living.
-          </p>
-
-          <Link
-            href="/projects"
-            className="mt-10 w-fit border border-white/70 px-8 py-4 text-xs tracking-[0.2em] transition hover:bg-white hover:text-black"
-          >
-            EXPLORE OUR WORK →
-          </Link>
-        </div>
-      </section>
-
-      {/* Introduction */}
-      <section
-        id="about"
-        className="mx-auto grid max-w-7xl gap-14 px-6 py-28 md:grid-cols-2 md:items-center lg:px-10"
-      >
-        <div>
-          <p className="mb-5 text-xs tracking-[0.3em] text-[#a58b67]">
-            ABOUT AUREN
-          </p>
-
-          <h2 className="text-4xl leading-tight font-light md:text-5xl">
-            Design is not just
-            <br />
-            how a space looks.
-            <br />
-            It's how it <span className="italic">feels.</span>
-          </h2>
-        </div>
-
-        <div>
-          <p className="text-base leading-8 text-[#77766f]">
-            At Auren Interiors, we believe every space has a story waiting to be
-            told. Our approach combines thoughtful planning, timeless materials
-            and carefully selected details to create interiors that feel truly
-            personal.
-          </p>
-
-          <p className="mt-5 text-base leading-8 text-[#77766f]">
-            From the first concept to the finishing touches, we make every
-            detail count.
-          </p>
-
-          <Link
-            href="/about"
-            className="mt-8 inline-block border-b border-[#a58b67] pb-2 text-sm tracking-wider"
-          >
-            DISCOVER OUR APPROACH →
-          </Link>
-        </div>
-      </section>
-
-      {/* Projects */}
-      <section id="projects" className="bg-[#efeee9] px-6 py-24 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-14 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-            <div>
-              <p className="mb-4 text-xs tracking-[0.3em] text-[#a58b67]">
-                SELECTED WORK
+            <div className="absolute bottom-0 left-0 max-w-2xl p-6 text-linen sm:p-12">
+              <p className="text-[11px] tracking-[0.35em] text-brass-light">
+                INTERIOR DESIGN · CHENNAI
               </p>
+              <h1 className="mt-5 font-serif text-5xl leading-[1.05] sm:text-7xl">
+                Homes that feel like you.
+              </h1>
+              <p className="mt-5 max-w-lg text-base leading-8 text-linen/80">
+                Warm, practical interiors for Indian families, designed around
+                the way you really live.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/projects"
+                  className="bg-brass-light px-8 py-4 text-center text-xs tracking-[0.2em] text-espresso transition hover:bg-white"
+                >
+                  VIEW PROJECTS
+                </Link>
+                <Link
+                  href="/contact"
+                  className="border border-linen/60 px-8 py-4 text-center text-xs tracking-[0.2em] transition hover:bg-linen hover:text-espresso"
+                >
+                  BOOK A CONSULTATION
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
 
-              <h2 className="text-4xl font-light md:text-5xl">
-                Spaces we've created.
-              </h2>
+        {/* Intro */}
+        <section className="mx-auto grid max-w-7xl gap-10 px-5 py-20 sm:px-8 md:grid-cols-2 md:items-center md:py-28">
+          <h2 className="font-serif text-4xl leading-tight sm:text-5xl">
+            Design is not just how a space looks.
+            <span className="text-brass"> It is how it feels.</span>
+          </h2>
+          <div>
+            <p className="text-base leading-8 text-clay">
+              At Auren, we plan every home around your family, your routines and
+              your budget. From the first conversation to the final styling, one
+              team looks after everything.
+            </p>
+            <Link
+              href="/about"
+              className="mt-7 inline-block border-b border-brass pb-1 text-sm tracking-[0.15em]"
+            >
+              OUR APPROACH →
+            </Link>
+          </div>
+        </section>
+
+        {/* Featured projects */}
+        <section className="bg-sand px-5 py-20 sm:px-8 md:py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+              <div>
+                <p className="text-xs tracking-[0.3em] text-brass">
+                  FEATURED WORK
+                </p>
+                <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+                  Recent spaces
+                </h2>
+              </div>
+              <Link
+                href="/projects"
+                className="text-sm tracking-[0.15em] underline underline-offset-4"
+              >
+                ALL PROJECTS →
+              </Link>
             </div>
 
-            <p className="max-w-sm text-sm leading-7 text-[#77766f]">
-              A collection of thoughtfully designed spaces where beauty meets
-              everyday functionality.
-            </p>
+            <div className="mt-12 grid gap-8 md:grid-cols-3">
+              {featured.map((project) => (
+                <Link
+                  key={project.id}
+                  href="/projects"
+                  className="group block"
+                  aria-label={project.title}
+                >
+                  <div className="overflow-hidden bg-linen">
+                    <img
+                      src={photo(project.image, 800)}
+                      alt={project.title}
+                      width={800}
+                      height={1000}
+                      loading="lazy"
+                      className="aspect-4/5 w-full object-cover transition duration-700 group-hover:scale-105 motion-reduce:transition-none"
+                    />
+                  </div>
+                  <p className="mt-5 text-[11px] tracking-[0.25em] text-brass">
+                    {project.room.toUpperCase()}
+                  </p>
+                  <h3 className="mt-2 font-serif text-2xl">{project.title}</h3>
+                  <p className="mt-1 text-sm text-clay">{project.place}</p>
+                </Link>
+              ))}
+            </div>
           </div>
+        </section>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <article key={project.title} className="group">
-                <div className="overflow-hidden bg-[#dedbd3]">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    loading="lazy"
-                    className="h-[360px] w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
-                </div>
+        {/* Services */}
+        <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 md:py-28">
+          <p className="text-xs tracking-[0.3em] text-brass">WHAT WE DO</p>
+          <h2 className="mt-4 font-serif text-4xl sm:text-5xl">Our services</h2>
 
-                <p className="mt-6 text-xs tracking-[0.2em] text-[#a58b67]">
-                  {project.category}
-                </p>
-
-                <h3 className="mt-2 text-xl font-light">{project.title}</h3>
-              </article>
+          <div className="mt-12 border-t border-walnut/15">
+            {services.slice(0, 4).map((service) => (
+              <div
+                key={service.number}
+                className="grid gap-3 border-b border-walnut/15 py-8 md:grid-cols-[90px_1fr_1.2fr] md:items-center"
+              >
+                <span className="text-sm text-brass">{service.number}</span>
+                <h3 className="font-serif text-2xl">{service.title}</h3>
+                <p className="text-sm leading-7 text-clay">{service.text}</p>
+              </div>
             ))}
           </div>
 
-          <div className="mt-14 text-center">
-            <Link
-              href="/projects"
-              className="inline-block border border-[#25251f] px-9 py-4 text-xs tracking-[0.2em] transition hover:bg-[#25251f] hover:text-white"
-            >
-              VIEW ALL PROJECTS →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section id="services" className="mx-auto max-w-7xl px-6 py-28 lg:px-10">
-        <div className="mb-14">
-          <p className="mb-4 text-xs tracking-[0.3em] text-[#a58b67]">
-            WHAT WE DO
-          </p>
-          <h2 className="text-4xl font-light md:text-5xl">Our expertise.</h2>
-        </div>
-
-        <div className="border-t border-[#dedbd3]">
-          {services.map((service) => (
-            <div
-              key={service.number}
-              className="grid gap-5 border-b border-[#dedbd3] py-9 md:grid-cols-[100px_1fr_1fr] md:items-center"
-            >
-              <span className="text-sm text-[#a58b67]">{service.number}</span>
-
-              <h3 className="text-2xl font-light">{service.title}</h3>
-
-              <p className="text-sm leading-7 text-[#77766f]">
-                {service.description}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10">
           <Link
             href="/services"
-            className="inline-block border-b border-[#a58b67] pb-2 text-sm tracking-wider"
+            className="mt-8 inline-block border-b border-brass pb-1 text-sm tracking-[0.15em]"
           >
-            EXPLORE OUR SERVICES →
+            SERVICES AND BUDGET ESTIMATOR →
           </Link>
-        </div>
-      </section>
+        </section>
 
-      {/* Contact */}
-      <section
-        id="contact"
-        className="bg-[#292a25] px-6 py-24 text-center text-white"
-      >
-        <p className="mb-6 text-xs tracking-[0.3em] text-[#d6c1a1]">
-          LET'S CREATE SOMETHING BEAUTIFUL
-        </p>
+        {/* Process */}
+        <section className="bg-walnut px-5 py-20 text-linen sm:px-8 md:py-24">
+          <div className="mx-auto max-w-7xl">
+            <p className="text-xs tracking-[0.3em] text-brass-light">
+              HOW WE WORK
+            </p>
+            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+              Four simple steps
+            </h2>
 
-        <h2 className="mx-auto max-w-3xl text-4xl leading-tight font-light md:text-6xl">
-          Your dream space
-          <br />
-          starts with a{" "}
-          <span className="italic text-[#d6c1a1]">conversation.</span>
-        </h2>
+            <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {steps.map((step) => (
+                <div
+                  key={step.number}
+                  className="border-t border-linen/20 pt-6"
+                >
+                  <p className="font-serif text-4xl text-brass-light">
+                    {step.number}
+                  </p>
+                  <h3 className="mt-4 font-serif text-2xl">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-linen/65">
+                    {step.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <p className="mx-auto mt-7 max-w-lg text-sm leading-7 text-white/60">
-          Have a project in mind? We'd love to hear about your ideas and explore
-          how we can bring them to life.
-        </p>
+        {/* CTA */}
+        <section className="px-5 py-20 text-center sm:px-8">
+          <p className="text-xs tracking-[0.3em] text-brass">
+            LET US CREATE SOMETHING BEAUTIFUL
+          </p>
+          <h2 className="mx-auto mt-5 max-w-2xl font-serif text-4xl leading-tight sm:text-5xl">
+            Your dream space starts with a conversation.
+          </h2>
+          <Link
+            href="/contact"
+            className="mt-9 inline-block bg-walnut px-9 py-4 text-xs tracking-[0.2em] text-linen transition hover:bg-brass"
+          >
+            BOOK A CONSULTATION
+          </Link>
+        </section>
+      </main>
 
-        <ContactForm />
-      </section>
-
-      {/* Footer */}
-      <footer className="flex flex-col items-center justify-between gap-4 bg-[#20211d] px-6 py-8 text-center text-xs text-white/50 md:flex-row md:px-10">
-        <p className="tracking-[0.2em]">AUREN INTERIORS</p>
-        <p>© 2026 Auren Interiors. All rights reserved.</p>
-        <Link href="#top" className="hover:text-white">
-          BACK TO TOP ↑
-        </Link>
-      </footer>
-    </main>
+      <Footer />
+    </>
   );
 }

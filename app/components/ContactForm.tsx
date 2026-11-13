@@ -1,43 +1,58 @@
 "use client";
 
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
+
+const projectTypes = [
+  "Full Home Interiors",
+  "Modular Kitchen & Wardrobes",
+  "Living or Bedroom Design",
+  "Vastu-friendly Space Planning",
+  "Commercial Space",
+  "Other",
+];
+
+function classify(value: string): "email" | "phone" | null {
+  const v = value.trim();
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return "email";
+  const digits = v.replace(/[\s\-()+]/g, "");
+  if (/^(91)?[6-9]\d{9}$/.test(digits)) return "phone";
+  return null;
+}
 
 export default function ContactForm() {
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [success, setSuccess] = useState(false);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("");
+    setError("");
 
-    const form = e.currentTarget;
-
-    setLoading(true);
-    setMessage("");
-    setSuccess(false);
-
+    const form = event.currentTarget;
     const formData = new FormData(form);
+    const contact = String(formData.get("contact") || "");
+    const kind = classify(contact);
 
-    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
-
-    if (!accessKey) {
-      setMessage("Access Key is missing. Please check .env.local");
-      setLoading(false);
-      console.error("Web3Forms Access Key is missing.");
+    if (!kind) {
+      setError(
+        "Please enter a valid email address or a 10-digit mobile number.",
+      );
       return;
     }
 
-    const data = {
-      access_key: accessKey,
-      subject: "New Enquiry - Auren Interiors",
-      from_name: "Auren Interiors Website",
+    setLoading(true);
+
+    const payload: Record<string, unknown> = {
+      access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+      subject: "New Enquiry - Auren Interiors (Demo)",
       name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
+      contact,
       project_type: formData.get("project_type"),
       message: formData.get("message"),
     };
+    if (kind === "email") payload.email = contact.trim();
+    if (kind === "phone") payload.phone = contact.trim();
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
@@ -46,98 +61,115 @@ export default function ContactForm() {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
-
       const result = await response.json();
 
-      console.log("Web3Forms Response:", result);
-
-      if (response.ok && result.success) {
-        setSuccess(true);
-        setMessage("Thank you! Your enquiry has been submitted successfully.");
+      if (result.success) {
+        setStatus(
+          "Thank you! We have received your enquiry and will contact you soon.",
+        );
         form.reset();
       } else {
-        setSuccess(false);
-        setMessage(result.message || "Something went wrong. Please try again.");
+        setError(
+          result.message || "Unable to send your enquiry. Please try again.",
+        );
       }
-    } catch (error) {
-      console.error("Contact Form Error:", error);
-      setSuccess(false);
-      setMessage("Unable to submit. Please check your internet connection.");
+    } catch {
+      setError("Unable to send your enquiry. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
+  const fieldClass =
+    "w-full border border-walnut/20 bg-white px-4 py-3.5 text-base text-espresso outline-none transition placeholder:text-espresso/40 focus:border-brass focus:ring-2 focus:ring-brass/20";
+  const labelClass = "mb-2 block text-sm font-medium";
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mx-auto mt-12 max-w-2xl space-y-5 text-left"
-    >
-      <input
-        name="name"
-        type="text"
-        placeholder="Your Name"
-        required
-        className="w-full border border-white/20 bg-white/5 px-5 py-4 text-white outline-none focus:border-[#d6c1a1]"
-      />
+    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+      <div>
+        <label htmlFor="name" className={labelClass}>
+          Your Name
+        </label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          autoComplete="name"
+          placeholder="Enter your name"
+          className={fieldClass}
+        />
+      </div>
 
-      <input
-        name="email"
-        type="email"
-        placeholder="Email Address"
-        required
-        className="w-full border border-white/20 bg-white/5 px-5 py-4 text-white outline-none focus:border-[#d6c1a1]"
-      />
+      <div>
+        <label htmlFor="contact" className={labelClass}>
+          Email or Phone Number
+        </label>
+        <input
+          id="contact"
+          name="contact"
+          type="text"
+          required
+          autoComplete="email"
+          placeholder="Email address or 10-digit mobile number"
+          className={fieldClass}
+        />
+      </div>
 
-      <input
-        name="phone"
-        type="tel"
-        placeholder="Phone Number"
-        required
-        className="w-full border border-white/20 bg-white/5 px-5 py-4 text-white outline-none focus:border-[#d6c1a1]"
-      />
+      <div>
+        <label htmlFor="project_type" className={labelClass}>
+          Project Type
+        </label>
+        <select
+          id="project_type"
+          name="project_type"
+          required
+          defaultValue=""
+          className={fieldClass}
+        >
+          <option value="" disabled>
+            Select project type
+          </option>
+          {projectTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <select
-        name="project_type"
-        required
-        defaultValue=""
-        className="w-full border border-white/20 bg-[#292a25] px-5 py-4 text-white outline-none focus:border-[#d6c1a1]"
-      >
-        <option value="" disabled>
-          Select Project Type
-        </option>
-        <option value="Residential Design">Residential Design</option>
-        <option value="Commercial Design">Commercial Design</option>
-        <option value="Space Planning">Space Planning</option>
-        <option value="Other">Other</option>
-      </select>
-
-      <textarea
-        name="message"
-        rows={5}
-        placeholder="Tell us about your project..."
-        required
-        className="w-full border border-white/20 bg-white/5 px-5 py-4 text-white outline-none focus:border-[#d6c1a1]"
-      />
+      <div>
+        <label htmlFor="message" className={labelClass}>
+          Your Message
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows={5}
+          placeholder="Tell us about your home, rooms and budget"
+          className={`${fieldClass} resize-y`}
+        />
+      </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#d6c1a1] px-8 py-4 text-xs font-semibold tracking-[0.2em] text-[#292a25] transition hover:bg-white disabled:opacity-50"
+        className="w-full bg-walnut px-8 py-4 text-xs tracking-[0.2em] text-linen transition hover:bg-brass disabled:opacity-50"
       >
-        {loading ? "SENDING..." : "SUBMIT ENQUIRY →"}
+        {loading ? "SENDING..." : "SEND ENQUIRY"}
       </button>
 
-      {message && (
-        <p
-          aria-live="polite"
-          className={`text-center text-sm ${
-            success ? "text-green-400" : "text-red-400"
-          }`}
-        >
-          {message}
+      {error && (
+        <p role="alert" className="text-sm text-red-700">
+          {error}
+        </p>
+      )}
+      {status && (
+        <p role="status" className="text-sm text-brass">
+          {status}
         </p>
       )}
     </form>

@@ -1,129 +1,97 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import BudgetEstimator from "../components/BudgetEstimator";
+import { services, steps } from "../data";
 
-const services = [
-  {
-    number: "01",
-    title: "Residential Design",
-    description:
-      "Thoughtfully designed homes that reflect your personality and lifestyle. From elegant living rooms to beautiful bedrooms, we create spaces that feel like home.",
-  },
-  {
-    number: "02",
-    title: "Commercial Spaces",
-    description:
-      "Inspiring workspaces, offices and commercial interiors designed to improve comfort, functionality and visual appeal.",
-  },
-  {
-    number: "03",
-    title: "Space Planning",
-    description:
-      "Smart layouts that make the best use of available space while maintaining comfort, balance and elegance.",
-  },
-  {
-    number: "04",
-    title: "Kitchen Design",
-    description:
-      "Beautiful and practical kitchen spaces with carefully planned storage, materials and layouts.",
-  },
-  {
-    number: "05",
-    title: "Bedroom Interiors",
-    description:
-      "Relaxing bedroom designs that combine thoughtful details, comfortable layouts and timeless style.",
-  },
-  {
-    number: "06",
-    title: "Interior Consultation",
-    description:
-      "Professional design guidance to help you plan your space, choose materials and bring your ideas together.",
-  },
-];
+export const metadata: Metadata = {
+  title: "Services | Auren Interiors (Demo)",
+  description:
+    "Full home interiors, modular kitchens, Vastu-friendly planning and commercial spaces, with a budget estimator.",
+};
 
 export default function ServicesPage() {
   return (
-    <main className="min-h-screen bg-[#f8f7f4] text-[#25251f]">
+    <>
       <Header />
 
-      {/* Hero */}
-      <section className="bg-[#292a25] px-6 py-28 text-center text-white">
-        <p className="mb-5 text-xs tracking-[0.4em] text-[#d6c1a1]">
-          WHAT WE DO
-        </p>
+      <main>
+        <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 md:py-24">
+          <p className="text-xs tracking-[0.3em] text-brass">WHAT WE DO</p>
+          <h1 className="mt-5 max-w-3xl font-serif text-5xl leading-[1.05] sm:text-6xl">
+            Everything your space needs, under one roof.
+          </h1>
 
-        <h1 className="font-serif text-5xl md:text-7xl">Our Services</h1>
+          <div className="mt-14 border-t border-walnut/15">
+            {services.map((service) => (
+              <article
+                key={service.number}
+                className="grid gap-6 border-b border-walnut/15 py-10 md:grid-cols-[90px_1fr_1fr] md:gap-10"
+              >
+                <span className="font-serif text-3xl text-brass">
+                  {service.number}
+                </span>
+                <div>
+                  <h2 className="font-serif text-3xl">{service.title}</h2>
+                  <p className="mt-3 text-sm leading-7 text-clay">
+                    {service.text}
+                  </p>
+                </div>
+                <ul className="space-y-3 text-sm">
+                  {service.items.map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-brass" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
 
-        <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-white/60">
-          Thoughtful interior design solutions created around your space,
-          lifestyle and vision.
-        </p>
-      </section>
+        <section className="mx-auto max-w-7xl px-5 pb-20 sm:px-8 md:pb-24">
+          <BudgetEstimator />
+        </section>
 
-      {/* Services List */}
-      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
-        <div className="mb-14">
-          <p className="mb-4 text-xs tracking-[0.3em] text-[#a58b67]">
-            OUR EXPERTISE
-          </p>
-          <h2 className="font-serif text-4xl md:text-5xl">
-            Spaces designed around you.
-          </h2>
-        </div>
-
-        <div className="border-t border-[#dedbd3]">
-          {services.map((service) => (
-            <div
-              key={service.number}
-              className="grid gap-5 border-b border-[#dedbd3] py-10 md:grid-cols-[100px_1fr_1fr] md:items-center"
-            >
-              <span className="text-sm text-[#a58b67]">{service.number}</span>
-
-              <h3 className="font-serif text-2xl">{service.title}</h3>
-
-              <p className="text-sm leading-7 text-[#77766f]">
-                {service.description}
-              </p>
+        <section className="bg-sand px-5 py-20 sm:px-8">
+          <div className="mx-auto max-w-7xl">
+            <p className="text-xs tracking-[0.3em] text-brass">HOW WE WORK</p>
+            <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+              From first visit to handover
+            </h2>
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {steps.map((step) => (
+                <div
+                  key={step.number}
+                  className="border-t border-walnut/20 pt-6"
+                >
+                  <p className="font-serif text-4xl text-brass">
+                    {step.number}
+                  </p>
+                  <h3 className="mt-3 font-serif text-2xl">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-clay">
+                    {step.text}
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* CTA */}
-      <section className="bg-[#efeee9] px-6 py-20 text-center">
-        <p className="mb-5 text-xs tracking-[0.3em] text-[#a58b67]">
-          HAVE A PROJECT IN MIND?
-        </p>
+        <section className="px-5 py-16 text-center sm:px-8">
+          <h2 className="font-serif text-4xl sm:text-5xl">Ready to begin?</h2>
+          <Link
+            href="/contact"
+            className="mt-8 inline-block bg-walnut px-9 py-4 text-xs tracking-[0.2em] text-linen transition hover:bg-brass"
+          >
+            BOOK A CONSULTATION
+          </Link>
+        </section>
+      </main>
 
-        <h2 className="font-serif text-4xl md:text-5xl">
-          Let's create something beautiful.
-        </h2>
-
-        <Link
-          href="/contact"
-          className="mt-8 inline-block bg-[#292a25] px-10 py-4 text-xs tracking-widest text-white transition hover:bg-[#a58b67]"
-        >
-          GET IN TOUCH →
-        </Link>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-[#20211d] px-6 py-10 text-center text-xs text-white/50">
-        <Link
-          href="/"
-          className="font-serif text-2xl tracking-widest text-white"
-        >
-          AUREN<span className="text-[#d6c1a1]">.</span>
-        </Link>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-6">
-          <Link href="/about">ABOUT</Link>
-          <Link href="/projects">PROJECTS</Link>
-          <Link href="/services">SERVICES</Link>
-          <Link href="/contact">CONTACT</Link>
-        </div>
-
-        <p className="mt-6">© 2026 Auren Interiors. All rights reserved.</p>
-      </footer>
-    </main>
+      <Footer />
+    </>
   );
 }

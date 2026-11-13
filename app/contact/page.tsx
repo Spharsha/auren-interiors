@@ -1,92 +1,72 @@
-import Link from "next/link";
-import ContactForm from "../components/ContactForm";
+import type { Metadata } from "next";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import ContactForm from "../components/ContactForm";
+
+export const metadata: Metadata = {
+  title: "Contact | Auren Interiors (Demo)",
+  description: "Book a design consultation. Demo website with sample content.",
+};
+
+const details = [
+  {
+    label: "STUDIO",
+    lines: ["Sample Address, Alwarpet", "Chennai, Tamil Nadu"],
+  },
+  { label: "HOURS", lines: ["Monday – Saturday", "10:00 AM – 7:00 PM"] },
+  { label: "REPLY TIME", lines: ["Within one working day"] },
+];
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[#f8f7f4] text-[#25251f]">
+    <>
       <Header />
 
-      {/* Hero */}
-      <section className="bg-[#292a25] px-6 py-24 text-center text-white">
-        <p className="mb-5 text-xs tracking-[0.4em] text-[#d6c1a1]">
-          GET IN TOUCH
-        </p>
+      <main className="mx-auto max-w-7xl px-5 py-16 sm:px-8 md:py-24">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div>
+            <p className="text-xs tracking-[0.3em] text-brass">GET IN TOUCH</p>
+            <h1 className="mt-5 font-serif text-5xl leading-[1.05] sm:text-6xl">
+              Tell us about your dream space.
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-8 text-clay">
+              Planning a new home, a renovation or an office? Share a few
+              details and we will arrange a consultation.
+            </p>
 
-        <h1 className="font-serif text-5xl md:text-7xl">Let's Talk.</h1>
-
-        <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-white/60">
-          Have a project in mind? Tell us about your ideas. We'd love to hear
-          from you and help create a space you'll love.
-        </p>
-      </section>
-
-      {/* Contact Details and Form */}
-      <section className="mx-auto grid max-w-7xl gap-14 px-6 py-24 md:grid-cols-2 lg:px-10">
-        <div>
-          <p className="mb-5 text-xs tracking-[0.3em] text-[#a58b67]">
-            START A CONVERSATION
-          </p>
-
-          <h2 className="font-serif text-4xl leading-tight md:text-5xl">
-            Tell us about your dream space.
-          </h2>
-
-          <p className="mt-7 max-w-md text-sm leading-8 text-[#77766f]">
-            Whether you are planning a new home, renovating a room or designing
-            a commercial space, we would love to understand your vision.
-          </p>
-
-          <div className="mt-12 space-y-6">
-            <div>
-              <p className="text-xs tracking-widest text-[#a58b67]">
-                OUR APPROACH
-              </p>
-              <p className="mt-2 text-sm text-[#77766f]">
-                Personal attention. Thoughtful planning. Timeless design.
-              </p>
+            <div className="mt-10 space-y-8">
+              {details.map((item) => (
+                <div key={item.label}>
+                  <p className="text-xs tracking-[0.25em] text-brass">
+                    {item.label}
+                  </p>
+                  <p className="mt-2 text-sm leading-7">
+                    {item.lines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            <div>
-              <p className="text-xs tracking-widest text-[#a58b67]">
-                ENQUIRIES
-              </p>
-              <p className="mt-2 text-sm text-[#77766f]">
-                Please use the contact form to send us your project details.
-              </p>
-            </div>
+            <p className="mt-10 text-xs leading-5 text-clay">
+              Address and timings on this demo are placeholders.
+            </p>
+          </div>
+
+          <div className="bg-sand p-6 sm:p-10">
+            <h2 className="font-serif text-3xl">Send an enquiry</h2>
+            <p className="mb-8 mt-2 text-sm text-clay">
+              Share your email or phone number, and a short message.
+            </p>
+            <ContactForm />
           </div>
         </div>
+      </main>
 
-        <div className="bg-[#292a25] p-6 text-white md:p-10">
-          <h2 className="font-serif text-3xl">Send an Enquiry</h2>
-
-          <p className="mt-3 text-sm leading-7 text-white/60">
-            Fill in the details below and we'll receive your enquiry.
-          </p>
-
-          <ContactForm />
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-[#20211d] px-6 py-10 text-center text-xs text-white/50">
-        <Link
-          href="/"
-          className="font-serif text-2xl tracking-widest text-white"
-        >
-          AUREN<span className="text-[#d6c1a1]">.</span>
-        </Link>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-6">
-          <Link href="/about">ABOUT</Link>
-          <Link href="/projects">PROJECTS</Link>
-          <Link href="/services">SERVICES</Link>
-          <Link href="/contact">CONTACT</Link>
-        </div>
-
-        <p className="mt-6">© 2026 Auren Interiors. All rights reserved.</p>
-      </footer>
-    </main>
+      <Footer />
+    </>
   );
 }
